@@ -6,7 +6,7 @@ const ListOfDoctors = () => {
 
   useEffect(() => {
     // yahan direct fetch se data le rahe hain
-    fetch("http://localhost:5000/doctorsData")
+    fetch("https://apna-doctor-backend.onrender.com/doctorsData")
       .then((res) => res.json())
       .then((data) => {
         console.log("Fetched data:", data);   // <-- yaha check kar bhai kya aa raha

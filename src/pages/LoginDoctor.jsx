@@ -8,7 +8,7 @@ function LoginDoctor() {
 
   const loginUser = async (email, password) => {
     try {
-      const res = await fetch('http://localhost:5000/login/doctor', {
+      const res = await fetch('https://apna-doctor-backend.onrender.com/login/doctor', {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),

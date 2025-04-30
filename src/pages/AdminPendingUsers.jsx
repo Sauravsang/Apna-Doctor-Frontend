@@ -17,7 +17,7 @@ function AdminPendingUsers() {
   useEffect(() => {
     const fetchPendingUsers = async () => {
       try {
-        const res = await fetch('http://localhost:5000/doctor/pending-users');
+        const res = await fetch('https://apna-doctor-backend.onrender.com/doctor/pending-users');
     
         if (!res.ok) {
           throw new Error("Failed to fetch users");
@@ -41,7 +41,7 @@ function AdminPendingUsers() {
   // Approve User
   const approveUser = async (userId, role) => {
     try {
-      await axios.put(`http://localhost:5000/admin/approve/${userId}`, { role });
+      await axios.put(`https://apna-doctor-backend.onrender.com/admin/approve/${userId}`, { role });
       alert("User approved successfully!");
       // Refresh list after approval
       setPendingUsers(pendingUsers.filter(user => user._id !== userId));

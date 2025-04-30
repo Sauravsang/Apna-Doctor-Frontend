@@ -8,7 +8,7 @@ const BrowseByHospital = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch("http://localhost:5000/browseData")
+    fetch("https://apna-doctor-backend.onrender.com/browseData")
       .then((res) => res.json())
       .then((data) => {
         console.log("Hospitals fetched:", data);

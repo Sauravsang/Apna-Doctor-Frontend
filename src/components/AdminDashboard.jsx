@@ -8,7 +8,7 @@ function AdminDashboard() {
 
   const fetchPendingUsers = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/doctor/pending-users");
+      const res = await axios.get("https://apna-doctor-backend.onrender.com/doctor/pending-users");
       setUsers(res.data);
     } catch (error) {
       console.error("Error fetching pending users:", error);
@@ -20,7 +20,7 @@ function AdminDashboard() {
 
   const handleApprove = async (id) => {
     try {
-      await axios.put(`http://localhost:5000/admin/approve-user/${id}`);
+      await axios.put(`https://apna-doctor-backend.onrender.com/admin/approve-user/${id}`);
       setUsers((prev) =>
         prev.map((user) =>
           user._id === id ? { ...user, isApproved: "Accepted" } : user
@@ -33,7 +33,7 @@ function AdminDashboard() {
 
   const handleReject = async (id) => {
     try {
-      await axios.put(`http://localhost:5000/admin/reject-user/${id}`);
+      await axios.put(`https://apna-doctor-backend.onrender.com/admin/reject-user/${id}`);
       setUsers((prev) => prev.filter((user) => user._id !== id));
     } catch (err) {
       alert("Failed to reject user.");
@@ -42,7 +42,7 @@ function AdminDashboard() {
 
   const AllDoctors = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/allDoctors");
+      const res = await axios.get("https://apna-doctor-backend.onrender.com/allDoctors");
       setDoc(res.data);
     } catch (error) {
       console.error("Error fetching doctors:", error);

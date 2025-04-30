@@ -17,7 +17,7 @@ function DoctorSignup() {
     e.preventDefault();
   
     try {
-      const response = await fetch("http://localhost:5000/signupdoc", {
+      const response = await fetch("https://apna-doctor-backend.onrender.com/signupdoc", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
