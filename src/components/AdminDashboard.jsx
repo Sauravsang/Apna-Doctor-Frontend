@@ -55,11 +55,12 @@ function AdminDashboard() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-100 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-5xl mx-auto bg-white rounded-3xl shadow-2xl p-10 md:p-12">
-        <h2 className="text-4xl font-bold text-center text-blue-800 mb-10">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-100 py-10 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-6xl mx-auto bg-white rounded-3xl shadow-2xl p-6 sm:p-10 md:p-12">
+        <h2 className="text-3xl sm:text-4xl font-bold text-center text-blue-800 mb-8">
           Admin Dashboard
         </h2>
+
         {loading ? (
           <p className="text-center text-gray-600">Loading...</p>
         ) : users.length === 0 ? (
@@ -69,24 +70,24 @@ function AdminDashboard() {
             {users.map((user) => (
               <div
                 key={user._id}
-                className="bg-gradient-to-tr from-white to-blue-50 border border-gray-200 rounded-xl p-6 flex flex-col md:flex-row justify-between items-start md:items-center shadow hover:shadow-lg transition-all duration-300"
+                className="bg-gradient-to-tr from-white to-blue-50 border border-gray-200 rounded-xl p-5 flex flex-col md:flex-row justify-between items-start md:items-center shadow hover:shadow-lg transition-all duration-300"
               >
-                <div className="space-y-1">
+                <div className="space-y-1 mb-4 md:mb-0">
                   <h4 className="text-lg font-semibold text-gray-800">{user.name}</h4>
                   <p className="text-sm text-gray-600">{user.email}</p>
                   <p className="text-sm text-gray-500 capitalize">Role: {user.role}</p>
                   <p className="text-sm font-medium text-yellow-600">Status: {user.isApproved}</p>
                 </div>
-                <div className="mt-4 md:mt-0 flex gap-3">
+                <div className="flex flex-wrap gap-3">
                   <button
                     onClick={() => handleApprove(user._id)}
-                    className="bg-green-500 hover:bg-green-600 text-white px-5 py-2 rounded-xl shadow"
+                    className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-xl shadow"
                   >
                     Approve
                   </button>
                   <button
                     onClick={() => handleReject(user._id)}
-                    className="bg-red-500 hover:bg-red-600 text-white px-5 py-2 rounded-xl shadow"
+                    className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-xl shadow"
                   >
                     Reject
                   </button>
@@ -107,12 +108,14 @@ function AdminDashboard() {
 
         {doc.length > 0 && (
           <div className="mt-10">
-            <h3 className="text-2xl font-bold text-center text-gray-800 mb-6">All Doctors</h3>
-            <div className="grid md:grid-cols-2 gap-6">
+            <h3 className="text-2xl font-bold text-center text-gray-800 mb-6">
+              All Doctors
+            </h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {doc.map((doctor) => (
                 <div
                   key={doctor._id}
-                  className="bg-white border border-gray-200 p-6 rounded-2xl shadow-md hover:shadow-xl transition duration-300"
+                  className="bg-white border border-gray-200 p-5 rounded-2xl shadow-md hover:shadow-xl transition duration-300"
                 >
                   <h4 className="text-lg font-bold text-gray-700">{doctor.name}</h4>
                   <p className="text-sm text-gray-600">{doctor.email}</p>

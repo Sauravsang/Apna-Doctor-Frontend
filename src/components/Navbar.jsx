@@ -1,30 +1,36 @@
-import React from 'react'
-import { doclogo } from '../Data'
-import { Link, useLocation } from 'react-router-dom'
-import { motion } from "framer-motion";
+import React, { useState } from "react";
+import { doclogo } from "../Data";
+import { Link, useLocation } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
 
 function Navbar() {
-  const location = useLocation()
+  const location = useLocation();
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  const navItems = [
+    { path: "/Browse", label: "Browse" },
+    { path: "/HelpPage", label: "Help" },
+    { path: "/list-of-doctors", label: "List Of Doctors on ApnaDoctor" },
+    { path: "/login", label: "Login" },
+  ];
+
   return (
-   
     <motion.nav
-      className="bg-white shadow-sm sticky top-0 z-10"
+      className="bg-white shadow-sm sticky top-0 z-50"
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 1, ease: "easeOut" }}
     >
       <div className="max-w-7xl mx-auto flex items-center justify-between px-4 lg:px-6 py-4">
-        <Link className="flex gap-5 font-bold items-center" to="/">
-          <img src={doclogo} alt="ApnaDoctor logo" className="w-15" />
-          Apna Doctor
+        {/* Logo */}
+        <Link className="flex gap-3 font-bold items-center" to="/">
+          <img src={doclogo} alt="ApnaDoctor logo" className="w-12 h-12" />
+          <span className="text-lg md:text-xl">Apna Doctor</span>
         </Link>
+
+        {/* Desktop Nav */}
         <div className="hidden md:flex gap-6 items-center text-zinc-700">
-          {[
-            { path: "/Browse", label: "Browse" },
-            { path: "/HelpPage", label: "Help" },
-            { path: "/list-of-doctors", label: "List Of Doctors on ApnaDoctor" },
-            { path: "/login", label: "Login" },
-          ].map(({ path, label }) => (
+          {navItems.map(({ path, label }) => (
             <motion.div
               key={path}
               whileHover={{ scale: 1.05 }}
@@ -43,70 +49,66 @@ function Navbar() {
               />
             </motion.div>
           ))}
-
           <Link
             to="/sign-up"
-            whileHover={{ scale: 1.05 }}
             className="ml-1 bg-[#f6df4e] font-bold px-4 py-2 rounded-full text-[#333231] border border-[#f6df4e] hover:bg-yellow-300 transition-colors"
           >
             Sign up
           </Link>
         </div>
+
+        {/* Mobile menu button */}
+        <button
+          className="md:hidden focus:outline-none"
+          onClick={() => setMenuOpen(!menuOpen)}
+        >
+          <svg
+            className="w-6 h-6 text-gray-700"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth={2}
+            viewBox="0 0 24 24"
+          >
+            {menuOpen ? (
+              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+            ) : (
+              <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+            )}
+          </svg>
+        </button>
       </div>
+
+      {/* Mobile Dropdown Menu */}
+      <AnimatePresence>
+        {menuOpen && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            className="md:hidden bg-white px-4 pt-2 pb-4 space-y-3 shadow-md"
+          >
+            {navItems.map(({ path, label }) => (
+              <Link
+                key={path}
+                to={path}
+                className={`block text-gray-700 hover:text-blue-600`}
+                onClick={() => setMenuOpen(false)}
+              >
+                {label}
+              </Link>
+            ))}
+            <Link
+              to="/sign-up"
+              className="block mt-2 bg-[#f6df4e] font-bold px-4 py-2 rounded-full text-[#333231] border border-[#f6df4e] hover:bg-yellow-300 transition-colors w-fit"
+              onClick={() => setMenuOpen(false)}
+            >
+              Sign up
+            </Link>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </motion.nav>
-//   );
-// };
-
-// export default Navbar;
-
-    // <header className="bg-white shadow-sm sticky top-0 z-50">
-    //         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-    //           <img src={doclogo} alt="Apna Doctor" className="h-10 w-auto" />
-    //           <h3 className="font-bold -ml-20 sm:-ml-50 md:-ml-90 lg:-ml-160">Apna Doctor</h3>
-    //           <nav className="hidden md:flex space-x-8 text-sm font-medium text-gray-700">
-    //           <Link
-    //             to="/find-doctor"
-    //             className="hover:text-blue-600 transition-colors duration-200"
-    //           >
-              
-              
-    //             Find a Doctor
-    //           </Link>
-    //           <Link
-    //             to="/book-appointment"
-    //             className="hover:text-blue-600 transition-colors duration-200"
-    //           >
-    //             Book Appointment
-    //           </Link>
-    //           <Link
-    //             to="/how-it-works"
-    //             className="hover:text-blue-600 transition-colors duration-200"
-    //           >
-    //             How It Works
-    //           </Link>
-    //           <Link
-    //             to="/sign-in"
-    //             className="hover:text-blue-600 transition-colors duration-200"
-    //           >
-    //             Sign In
-    //           </Link>
-    //           </nav>
-    //           <button className="md:hidden text-gray-600 focus:outline-none" aria-label="Open menu">
-    //             <svg
-    //               className="h-6 w-6"
-    //               fill="none"
-    //               stroke="currentColor"
-    //               strokeWidth={2}
-    //               strokeLinecap="round"
-    //               strokeLinejoin="round"
-    //               viewBox="0 0 24 24"
-    //             >
-    //               <path d="M4 6h16M4 12h16M4 18h16" />
-    //             </svg>
-    //           </button>
-    //         </div>
-    //       </header>
-  )
+  );
 }
 
-export default Navbar
+export default Navbar;
