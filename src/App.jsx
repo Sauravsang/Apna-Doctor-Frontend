@@ -18,7 +18,7 @@ import AdminDashboard from './components/AdminDashboard';
 import DoctorSignup from './pages/DoctorSignup';
 import PatientSignup from './pages/PatientSignup';
 import SendPage from './pages/SendPage';
-import LoginAdmin from './pages/loginAdmin';
+import LoginAdmin from './pages/LoginAdmin';
 import LoginDoctor from './pages/LoginDoctor';
 import LoginPatient from './pages/LoginPatient';
 
