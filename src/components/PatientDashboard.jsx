@@ -55,11 +55,12 @@ const PatientDashboard = () => {
   }, []);
 
   useEffect(() => {
-    const userType = localStorage.getItem("userType");
-    if (userType !== "Patient") {
-      alert("Only patients can access this page.");
-      navigate("/login");
-    }
+    const user = JSON.parse(localStorage.getItem("user"));
+if (!user || user.role !== "Patient") {
+  alert("Only patients can access this page.");
+  navigate("/login");
+}
+
   }, [navigate]);
 
   const bookAppointment = () => {

@@ -19,6 +19,8 @@ function LoginPatient() {
       if (res.ok) {
         localStorage.setItem("token", data.token);
         localStorage.setItem("user", JSON.stringify(data.user));
+        localStorage.setItem("userType", "Patient");
+
         return { success: true, user: data.user };
       } else {
         return { success: false, message: data.message || "Invalid credentials" };
@@ -34,15 +36,18 @@ function LoginPatient() {
     const res = await loginUser(email, password);
   
     if (res.success) {
-      console.log("User role:", res.user.role); // 🔍 DEBUG LOG
+      console.log("User role:", res.user.role);
   
       const role = res.user.role;
+      console.log(role);
+      
   
-      if (role === "Patient") {
+      if (role == "Patient") {
+        localStorage.setItem("userType", "Patient");
         navigate("/patientDashboard");
       } else {
         alert("Only Patient can access this area.");
-        navigate("/login");
+        // navigate("/login");
       }
     } else {
       alert(res.message);

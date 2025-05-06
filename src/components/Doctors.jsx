@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 
 const Doctors = ({ search }) => {
     const[sortOrder,setSortOrder]=useState("ass");
-    // array of object
     const doctorsData=[
         {id:1,name:"Dentists",price:599},
         {id:2,name:"Dermatologists",price:699},
