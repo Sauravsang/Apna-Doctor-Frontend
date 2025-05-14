@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
 const doctorsList = [
@@ -41,40 +41,54 @@ const PatientDashboard = () => {
 
   const [selectedDoctor, setSelectedDoctor] = useState(doctorsList[0]);
   const [changingText, setChangingText] = useState("Your Health");
+  const [appointmentDate, setAppointmentDate] = useState("");
+const [appointmentTime, setAppointmentTime] = useState("");
+
   const navigate = useNavigate();
 
   const words = ["Your Health", "Your Family", "Your Wellness", "Your Care"];
-  let wordIndex = 0;
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      wordIndex = (wordIndex + 1) % words.length;
-      setChangingText(words[wordIndex]);
-    }, 2000);
-    return () => clearInterval(interval);
-  }, []);
+  const wordIndex = useRef(0);
 
-  useEffect(() => {
-    const user = JSON.parse(localStorage.getItem("user"));
-if (!user || user.role !== "Patient") {
-  alert("Only patients can access this page.");
-  navigate("/login");
-}
+useEffect(() => {
+  const interval = setInterval(() => {
+    wordIndex.current = (wordIndex.current + 1) % words.length;
+    setChangingText(words[wordIndex.current]);
+  }, 2000);
+  return () => clearInterval(interval);
+}, []);
 
-  }, [navigate]);
 
-  const bookAppointment = () => {
-    const newAppointment = {
-      doctor: selectedDoctor.name,
-      specialty: selectedDoctor.specialty,
-      hospital: selectedDoctor.hospital,
-      date: "2025-05-20",
-      time: "11:00 AM",
-      status: "Pending",
-    };
-    setAppointments((prev) => [...prev, newAppointment]);
-    alert(`Appointment booked with ${selectedDoctor.name}.`);
+useEffect(() => {
+  const user = JSON.parse(localStorage.getItem("user"));
+  if (!user || user.role !== "Patient" || user.isApproved === false) {
+    alert("Only approved patients can access this page.");
+    navigate("/login");
+  }
+}, [navigate]);
+
+
+const bookAppointment = () => {
+  if (!appointmentDate || !appointmentTime) {
+    alert("Please select both date and time.");
+    return;
+  }
+
+  const newAppointment = {
+    doctor: selectedDoctor.name,
+    specialty: selectedDoctor.specialty,
+    hospital: selectedDoctor.hospital,
+    date: appointmentDate,
+    time: appointmentTime,
+    status: "Pending",
   };
+
+  setAppointments((prev) => [...prev, newAppointment]);
+  alert(`Appointment booked with ${selectedDoctor.name}.`);
+  setAppointmentDate("");
+  setAppointmentTime("");
+};
+
 
   const cancelAppointment = (index) => {
     const confirmCancel = window.confirm("Are you sure you want to cancel this appointment?");
@@ -85,7 +99,7 @@ if (!user || user.role !== "Patient") {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem("userType");
+    localStorage.removeItem("user");
     navigate("/login");
   };
 
@@ -152,31 +166,54 @@ if (!user || user.role !== "Patient") {
       </section>
 
       <section>
-        <h2 className="text-2xl font-semibold text-gray-700 mb-4">Book a New Appointment</h2>
-        <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700 mb-1">Select Doctor:</label>
-          <select
-            value={selectedDoctor.name}
-            onChange={(e) => {
-              const selected = doctorsList.find((doc) => doc.name === e.target.value);
-              setSelectedDoctor(selected);
-            }}
-            className="w-full px-4 py-2 border rounded-md shadow-sm"
-          >
-            {doctorsList.map((doc, i) => (
-              <option key={i} value={doc.name}>
-                {doc.name} ({doc.specialty}, {doc.hospital})
-              </option>
-            ))}
-          </select>
-        </div>
-        <button
-          onClick={bookAppointment}
-          className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold"
-        >
-          Book Now
-        </button>
-      </section>
+  <h2 className="text-2xl font-semibold text-gray-700 mb-4">Book a New Appointment</h2>
+
+  <div className="mb-4">
+    <label className="block text-sm font-medium text-gray-700 mb-1">Select Doctor:</label>
+    <select
+      value={selectedDoctor.name}
+      onChange={(e) => {
+        const selected = doctorsList.find((doc) => doc.name === e.target.value);
+        setSelectedDoctor(selected);
+      }}
+      className="w-full px-4 py-2 border rounded-md shadow-sm"
+    >
+      {doctorsList.map((doc, i) => (
+        <option key={i} value={doc.name}>
+          {doc.name} ({doc.specialty}, {doc.hospital})
+        </option>
+      ))}
+    </select>
+  </div>
+
+  <div className="mb-4">
+    <label className="block text-sm font-medium text-gray-700 mb-1">Select Date:</label>
+    <input
+      type="date"
+      value={appointmentDate}
+      onChange={(e) => setAppointmentDate(e.target.value)}
+      className="w-full px-4 py-2 border rounded-md shadow-sm"
+    />
+  </div>
+
+  <div className="mb-4">
+    <label className="block text-sm font-medium text-gray-700 mb-1">Select Time:</label>
+    <input
+      type="time"
+      value={appointmentTime}
+      onChange={(e) => setAppointmentTime(e.target.value)}
+      className="w-full px-4 py-2 border rounded-md shadow-sm"
+    />
+  </div>
+
+  <button
+    onClick={bookAppointment}
+    className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold"
+  >
+    Book Now
+  </button>
+</section>
+
 
       <style>
         {`
